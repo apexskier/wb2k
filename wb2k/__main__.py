@@ -66,7 +66,6 @@ def handle_message(message, channel, channel_id, sc, logger):
     user = message.get('user')
 
     if subtype in ('group_join', 'channel_join') and user:
-
         message_channel_id = message.get('channel')
         user_profile = message.get('user_profile')
         username = user_profile.get('name')
@@ -74,7 +73,7 @@ def handle_message(message, channel, channel_id, sc, logger):
         if message_channel_id == channel_id:
             try:
                 sc.rtm_send_message(channel,
-                                    "Welcome, <@{}>! :hand:".format(user))
+                                    "Sup, <@{}> :hand:\nMake sure to add a party hat to your avatar!".format(user))
                 logger.info("Welcomed {} to #{}".format(username, channel))
             except AttributeError:
                 logger.setLevel(logging.ERROR)
@@ -115,6 +114,9 @@ def cli(channel, verbose, retries):
 
         retry_count = 0
         backoff = 0.5
+
+        sc.rtm_send_message(channel,
+                "hello party people 🎉".format(user))
 
         while True:
             try:
