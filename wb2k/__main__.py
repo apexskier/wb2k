@@ -1,3 +1,5 @@
+# coding=utf-8
+
 import os
 import sys
 import time
@@ -87,8 +89,9 @@ def handle_message(message, channel, channel_id, sc, logger):
 @click.option('-v', '--verbose', count=True, help='It goes to 11.')
 @click.option('-r', '--retries', envvar='WB2K_RETRIES', default=8, type=(int), metavar='max_retries',
               help='The maximum number of times to attempt to reconnect on websocket connection errors')
+@click.option('--announce', is_flag=True, help='Announce to the channel when started')
 @click.version_option()
-def cli(channel, verbose, retries):
+def cli(channel, verbose, retries, announce):
 
     if verbose > 11:
         sys.exit(bail('fatal', 'red', "It doesn't go beyond 11"))
@@ -115,8 +118,8 @@ def cli(channel, verbose, retries):
         retry_count = 0
         backoff = 0.5
 
-        sc.rtm_send_message(channel,
-                "hello party people 🎉".format(user))
+        if announce:
+            sc.rtm_send_message(channel, "hello party people 🎉")
 
         while True:
             try:
